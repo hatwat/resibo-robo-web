@@ -82,6 +82,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   const [imageError, setImageError] = useState(false)
   const [sidePanelOpen, setSidePanelOpen] = useState(false)
   const cardRef = useRef(null)
+  const [zoomLevel, setZoomLevel] = useState(100)
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -480,51 +481,72 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
         </div>
       </div>
 
-      {/* Side Panel */}
-      {sidePanelOpen && (
-        <div className="fixed top-0 right-0 h-full w-[45vw] z-50 bg-ink-900 border-l border-ink-700 shadow-2xl flex flex-col">
-          {/* Panel Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-ink-700 shrink-0">
-            <div>
-              <p className="text-white text-sm font-display font-semibold">Invoice Image</p>
-              <p className="text-ink-500 text-xs font-body">{formData.vendor_name || 'Unknown Vendor'}</p>
-            </div>
-            <button
-              onClick={() => setSidePanelOpen(false)}
-              className="w-8 h-8 bg-ink-700 text-white rounded-full flex items-center justify-center
-                         hover:bg-ink-600 transition-all text-xl leading-none font-light"
-            >
-              ×
-            </button>
-          </div>
-
-          {/* Panel Image */}
-          <div className="flex-1 overflow-auto p-4">
-            <img
-              src={imgUrl}
-              alt="Invoice fullscreen"
-              className="w-full h-auto object-contain rounded-lg"
-            />
-          </div>
-
-          {/* Panel Footer */}
-          <div className="px-4 py-3 border-t border-ink-700 shrink-0 space-y-2">
-            {driveUrl && (
-              <a
-                href={driveUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center gap-1.5 text-xs text-ink-400 hover:text-accent-blue transition-colors font-body"
-              >
-                <span>↗</span> Open in Google Drive
-              </a>
-            )}
-            <p className="text-center text-ink-600 text-xs font-body">
-              Panel stays open while you edit fields
-            </p>
-          </div>
+ {/* Side Panel */}
+  {sidePanelOpen && (
+    <div className="fixed top-0 right-0 h-full w-[45vw] z-50 bg-ink-900 border-l border-ink-700 shadow-2xl flex flex-col">
+      {/* Panel Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-ink-700 shrink-0">
+        <div>
+          <p className="text-white text-sm font-display font-semibold">Invoice Image</p>
+          <p className="text-ink-500 text-xs font-body">{formData.vendor_name || 'Unknown Vendor'}</p>
         </div>
-      )}
+        <button
+          onClick={() => setSidePanelOpen(false)}
+          className="w-8 h-8 bg-ink-700 text-white rounded-full flex items-center justify-center
+                    hover:bg-ink-600 transition-all text-xl leading-none font-light"
+        >
+          ×
+        </button>
+      </div>
+
+      {/* Zoom Slider */}
+      <div className="px-4 py-2 border-b border-ink-700 shrink-0 flex items-center gap-3">
+        <span className="text-ink-500 text-xs font-body shrink-0">🔍</span>
+        <input
+          type="range"
+          min="100"
+          max="300"
+          value={zoomLevel}
+          onChange={(e) => setZoomLevel(Number(e.target.value))}
+          className="flex-1 h-1.5 accent-accent-green cursor-pointer"
+        />
+        <span className="text-ink-400 text-xs font-mono w-10 text-right shrink-0">{zoomLevel}%</span>
+        <button
+          onClick={() => setZoomLevel(100)}
+          className="text-ink-500 text-xs hover:text-white transition-colors font-body shrink-0"
+        >
+          Reset
+        </button>
+      </div>
+
+      {/* Panel Image */}
+      <div className="flex-1 overflow-auto p-4">
+        <img
+          src={imgUrl}
+          alt="Invoice fullscreen"
+          style={{ width: `${zoomLevel}%` }}
+          className="h-auto object-contain rounded-lg transition-all duration-150"
+        />
+      </div>
+
+      {/* Panel Footer */}
+      <div className="px-4 py-3 border-t border-ink-700 shrink-0 space-y-2">
+        {driveUrl && (
+          
+            href={driveUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center justify-center gap-1.5 text-xs text-ink-400 hover:text-accent-blue transition-colors font-body"
+          >
+            <span>↗</span> Open in Google Drive
+          </a>
+        )}
+        <p className="text-center text-ink-600 text-xs font-body">
+          Panel stays open while you edit fields
+        </p>
+      </div>
+    </div>
+  )}
     </>
   )
 }
