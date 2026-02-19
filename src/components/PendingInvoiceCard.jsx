@@ -440,7 +440,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
             <img
               src={imgUrl}
               alt="Invoice fullscreen"
-              style={{ width: `${zoomLevel}%`, minWidth: '100%' }}
+              style={{ width: `${zoomLevel}%` }}
               className="h-auto rounded-lg"
             />
           </div>
