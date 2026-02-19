@@ -436,7 +436,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
           </div>
 
           {/* Panel Image */}
-          <div className="flex-1 overflow-auto p-4">
+          <div className="flex-1 overflow-auto p-4" style={{ overflowX: 'auto', overflowY: 'auto' }}>
             <img
               src={imgUrl}
               alt="Invoice fullscreen"
