@@ -532,7 +532,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
       {/* Panel Footer */}
       <div className="px-4 py-3 border-t border-ink-700 shrink-0 space-y-2">
         {driveUrl && (
-          
+          <a
             href={driveUrl}
             target="_blank"
             rel="noreferrer"
