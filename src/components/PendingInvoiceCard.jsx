@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { supabase } from './lib/supabaseClient'
 import LoginForm from './components/LoginForm'
 import PendingInvoicesGrid from './components/PendingInvoicesGrid'
 
