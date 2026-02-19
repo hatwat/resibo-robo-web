@@ -45,7 +45,6 @@ function FieldRow({ label, value, onChange, type = 'text', placeholder = '', dis
 }
 
 export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved }) {
-  // Parse extracted_data — it may be a JSON string or already an object
   const rawData = typeof invoice.extracted_data === 'string'
     ? (() => { try { return JSON.parse(invoice.extracted_data) } catch { return {} } })()
     : (invoice.extracted_data || {})
@@ -65,7 +64,6 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
     total_amount: rawData.total_amount || 0,
     expense_category: rawData.expense_category || 'OTHERS',
     vat_status: rawData.vat_status || 'VAT_REGISTERED',
-    // pass-through fields
     vendor_source: rawData.vendor_source,
     vendor_id: rawData.vendor_id,
     invoice_count: rawData.invoice_count,
@@ -81,8 +79,8 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [sidePanelOpen, setSidePanelOpen] = useState(false)
-  const cardRef = useRef(null)
   const [zoomLevel, setZoomLevel] = useState(100)
+  const cardRef = useRef(null)
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -90,9 +88,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
 
   const animateRemove = (callback) => {
     setRemoved(true)
-    setTimeout(() => {
-      callback()
-    }, 380)
+    setTimeout(() => { callback() }, 380)
   }
 
   const handleSave = async () => {
@@ -158,7 +154,6 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   const driveUrl = formData.drive_url
   const isWorking = saving || cancelling
 
-  // Use Cloudinary URL as primary, fall back to Google Drive
   let imgUrl = rawData.cloudinary_url || null
   if (!imgUrl && driveUrl) {
     const match = driveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/)
@@ -216,46 +211,19 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
 
           {/* LEFT: Form fields */}
           <div className="lg:col-span-3 p-6 space-y-6">
-            {/* Vendor info */}
             <div>
               <h4 className="font-display text-xs font-bold uppercase tracking-widest text-ink-400 mb-4">
                 Vendor Information
               </h4>
               <div className="space-y-3">
-                <FieldRow
-                  label="Vendor Name"
-                  value={formData.vendor_name}
-                  onChange={(v) => handleChange('vendor_name', v)}
-                  disabled={isWorking}
-                />
-                <FieldRow
-                  label="TIN"
-                  value={formData.tin}
-                  onChange={(v) => handleChange('tin', v)}
-                  mono
-                  disabled={isWorking}
-                />
-                <FieldRow
-                  label="Address"
-                  value={formData.address}
-                  onChange={(v) => handleChange('address', v)}
-                  disabled={isWorking}
-                />
+                <FieldRow label="Vendor Name" value={formData.vendor_name} onChange={(v) => handleChange('vendor_name', v)} disabled={isWorking} />
+                <FieldRow label="TIN" value={formData.tin} onChange={(v) => handleChange('tin', v)} mono disabled={isWorking} />
+                <FieldRow label="Address" value={formData.address} onChange={(v) => handleChange('address', v)} disabled={isWorking} />
                 <div className="grid grid-cols-2 gap-3">
-                  <FieldRow
-                    label="City"
-                    value={formData.city}
-                    onChange={(v) => handleChange('city', v)}
-                    disabled={isWorking}
-                  />
+                  <FieldRow label="City" value={formData.city} onChange={(v) => handleChange('city', v)} disabled={isWorking} />
                   <div>
                     <label className="field-label">VAT Status</label>
-                    <select
-                      value={formData.vat_status}
-                      onChange={(e) => handleChange('vat_status', e.target.value)}
-                      disabled={isWorking}
-                      className="field-input"
-                    >
+                    <select value={formData.vat_status} onChange={(e) => handleChange('vat_status', e.target.value)} disabled={isWorking} className="field-input">
                       <option value="VAT_REGISTERED">VAT Registered</option>
                       <option value="VAT_EXEMPT">VAT Exempt</option>
                       <option value="NON_VAT">Non-VAT</option>
@@ -263,30 +231,12 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <FieldRow
-                    label="Invoice Number"
-                    value={formData.invoice_number}
-                    onChange={(v) => handleChange('invoice_number', v)}
-                    disabled={isWorking}
-                    mono
-                  />
-                  <FieldRow
-                    label="Date"
-                    value={formData.date}
-                    onChange={(v) => handleChange('date', v)}
-                    placeholder="MM/DD/YYYY"
-                    disabled={isWorking}
-                  />
+                  <FieldRow label="Invoice Number" value={formData.invoice_number} onChange={(v) => handleChange('invoice_number', v)} disabled={isWorking} mono />
+                  <FieldRow label="Date" value={formData.date} onChange={(v) => handleChange('date', v)} placeholder="MM/DD/YYYY" disabled={isWorking} />
                 </div>
-
                 <div>
                   <label className="field-label">Expense Category</label>
-                  <select
-                    value={formData.expense_category}
-                    onChange={(e) => handleChange('expense_category', e.target.value)}
-                    disabled={isWorking}
-                    className="field-input"
-                  >
+                  <select value={formData.expense_category} onChange={(e) => handleChange('expense_category', e.target.value)} disabled={isWorking} className="field-input">
                     {EXPENSE_CATEGORIES.map(c => (
                       <option key={c.value} value={c.value}>{c.label}</option>
                     ))}
@@ -301,41 +251,11 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
                 Financial Breakdown
               </h4>
               <div className="grid grid-cols-2 gap-3">
-                <FieldRow
-                  label="Vatable Sales"
-                  value={formData.vatable_sales}
-                  onChange={(v) => handleChange('vatable_sales', v)}
-                  type="number"
-                  disabled={isWorking}
-                />
-                <FieldRow
-                  label="VAT Amount"
-                  value={formData.vat_amount}
-                  onChange={(v) => handleChange('vat_amount', v)}
-                  type="number"
-                  disabled={isWorking}
-                />
-                <FieldRow
-                  label="VAT Exempt Sales"
-                  value={formData.vat_exempt_sales}
-                  onChange={(v) => handleChange('vat_exempt_sales', v)}
-                  type="number"
-                  disabled={isWorking}
-                />
-                <FieldRow
-                  label="Zero Rated Sales"
-                  value={formData.zero_rated_sales}
-                  onChange={(v) => handleChange('zero_rated_sales', v)}
-                  type="number"
-                  disabled={isWorking}
-                />
-                <FieldRow
-                  label="Service Charge"
-                  value={formData.service_charge}
-                  onChange={(v) => handleChange('service_charge', v)}
-                  type="number"
-                  disabled={isWorking}
-                />
+                <FieldRow label="Vatable Sales" value={formData.vatable_sales} onChange={(v) => handleChange('vatable_sales', v)} type="number" disabled={isWorking} />
+                <FieldRow label="VAT Amount" value={formData.vat_amount} onChange={(v) => handleChange('vat_amount', v)} type="number" disabled={isWorking} />
+                <FieldRow label="VAT Exempt Sales" value={formData.vat_exempt_sales} onChange={(v) => handleChange('vat_exempt_sales', v)} type="number" disabled={isWorking} />
+                <FieldRow label="Zero Rated Sales" value={formData.zero_rated_sales} onChange={(v) => handleChange('zero_rated_sales', v)} type="number" disabled={isWorking} />
+                <FieldRow label="Service Charge" value={formData.service_charge} onChange={(v) => handleChange('service_charge', v)} type="number" disabled={isWorking} />
                 <div>
                   <label className="field-label">Total Amount</label>
                   <input
@@ -353,22 +273,19 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
 
           {/* RIGHT: Image + actions */}
           <div className="lg:col-span-2 border-t lg:border-t-0 lg:border-l border-ink-100 flex flex-col">
-            {/* Invoice image */}
             <div className="flex-1 p-6">
               <h4 className="font-display text-xs font-bold uppercase tracking-widest text-ink-400 mb-4">
                 Original Invoice
               </h4>
               <div className="rounded-xl overflow-hidden border border-ink-100 bg-ink-50 min-h-[200px] flex items-center justify-center">
                 {imgUrl && !imageError ? (
-                  <>
-                    <img
-                      src={imgUrl}
-                      alt="Invoice"
-                      className="w-full h-auto object-contain max-h-[480px] cursor-zoom-in hover:opacity-90 transition-opacity"
-                      onError={() => setImageError(true)}
-                      onClick={() => setSidePanelOpen(true)}
-                    />
-                  </>
+                  <img
+                    src={imgUrl}
+                    alt="Invoice"
+                    className="w-full h-auto object-contain max-h-[480px] cursor-zoom-in hover:opacity-90 transition-opacity"
+                    onError={() => setImageError(true)}
+                    onClick={() => setSidePanelOpen(true)}
+                  />
                 ) : (
                   <div className="text-center p-8 text-ink-300">
                     <div className="text-5xl mb-3">🖼️</div>
@@ -432,8 +349,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
                     <button
                       onClick={handleCancel}
                       disabled={isWorking}
-                      className="flex-1 py-2 px-3 bg-accent-red text-white rounded-lg text-sm font-bold font-display
-                                 hover:bg-opacity-90 disabled:opacity-50 transition-all"
+                      className="flex-1 py-2 px-3 bg-accent-red text-white rounded-lg text-sm font-bold font-display hover:bg-opacity-90 disabled:opacity-50 transition-all"
                     >
                       {cancelling ? (
                         <span className="flex items-center justify-center gap-2">
@@ -444,8 +360,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
                     </button>
                     <button
                       onClick={() => setShowCancelConfirm(false)}
-                      className="py-2 px-3 rounded-lg text-sm font-semibold font-display text-ink-600
-                                 hover:bg-ink-100 transition-all"
+                      className="py-2 px-3 rounded-lg text-sm font-semibold font-display text-ink-600 hover:bg-ink-100 transition-all"
                     >
                       Keep
                     </button>
@@ -481,72 +396,73 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
         </div>
       </div>
 
- {/* Side Panel */}
-  {sidePanelOpen && (
-    <div className="fixed top-0 right-0 h-full w-[45vw] z-50 bg-ink-900 border-l border-ink-700 shadow-2xl flex flex-col">
-      {/* Panel Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-ink-700 shrink-0">
-        <div>
-          <p className="text-white text-sm font-display font-semibold">Invoice Image</p>
-          <p className="text-ink-500 text-xs font-body">{formData.vendor_name || 'Unknown Vendor'}</p>
+      {/* Side Panel */}
+      {sidePanelOpen && (
+        <div className="fixed top-0 right-0 h-full w-[45vw] z-50 bg-ink-900 border-l border-ink-700 shadow-2xl flex flex-col">
+          {/* Panel Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-ink-700 shrink-0">
+            <div>
+              <p className="text-white text-sm font-display font-semibold">Invoice Image</p>
+              <p className="text-ink-500 text-xs font-body">{formData.vendor_name || 'Unknown Vendor'}</p>
+            </div>
+            <button
+              onClick={() => setSidePanelOpen(false)}
+              className="w-8 h-8 bg-ink-700 text-white rounded-full flex items-center justify-center hover:bg-ink-600 transition-all text-xl leading-none font-light"
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Zoom Slider */}
+          <div className="px-4 py-3 border-b border-ink-700 shrink-0 flex items-center gap-3 bg-ink-800">
+            <span className="text-ink-400 text-xs shrink-0">🔍</span>
+            <input
+              type="range"
+              min="100"
+              max="300"
+              step="10"
+              value={zoomLevel}
+              onChange={(e) => setZoomLevel(Number(e.target.value))}
+              style={{ accentColor: '#00C48C' }}
+              className="flex-1 cursor-pointer"
+            />
+            <span className="text-ink-300 text-xs font-mono w-10 text-right shrink-0">{zoomLevel}%</span>
+            <button
+              onClick={() => setZoomLevel(100)}
+              className="text-xs px-2 py-1 bg-ink-700 text-ink-300 rounded hover:bg-ink-600 hover:text-white transition-all font-body shrink-0"
+            >
+              Reset
+            </button>
+          </div>
+
+          {/* Panel Image */}
+          <div className="flex-1 overflow-auto p-4">
+            <img
+              src={imgUrl}
+              alt="Invoice fullscreen"
+              style={{ width: `${zoomLevel}%`, minWidth: '100%' }}
+              className="h-auto rounded-lg"
+            />
+          </div>
+
+          {/* Panel Footer */}
+          <div className="px-4 py-3 border-t border-ink-700 shrink-0 space-y-1">
+            {driveUrl && (
+              <a
+                href={driveUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-1.5 text-xs text-ink-400 hover:text-accent-blue transition-colors font-body"
+              >
+                <span>↗</span> Open in Google Drive
+              </a>
+            )}
+            <p className="text-center text-ink-600 text-xs font-body">
+              Panel stays open while you edit fields
+            </p>
+          </div>
         </div>
-        <button
-          onClick={() => setSidePanelOpen(false)}
-          className="w-8 h-8 bg-ink-700 text-white rounded-full flex items-center justify-center
-                    hover:bg-ink-600 transition-all text-xl leading-none font-light"
-        >
-          ×
-        </button>
-      </div>
-
-      {/* Zoom Slider */}
-      <div className="px-4 py-2 border-b border-ink-700 shrink-0 flex items-center gap-3">
-        <span className="text-ink-500 text-xs font-body shrink-0">🔍</span>
-        <input
-          type="range"
-          min="100"
-          max="300"
-          value={zoomLevel}
-          onChange={(e) => setZoomLevel(Number(e.target.value))}
-          className="flex-1 h-1.5 accent-accent-green cursor-pointer"
-        />
-        <span className="text-ink-400 text-xs font-mono w-10 text-right shrink-0">{zoomLevel}%</span>
-        <button
-          onClick={() => setZoomLevel(100)}
-          className="text-ink-500 text-xs hover:text-white transition-colors font-body shrink-0"
-        >
-          Reset
-        </button>
-      </div>
-
-      {/* Panel Image */}
-      <div className="flex-1 overflow-auto p-4">
-        <img
-          src={imgUrl}
-          alt="Invoice fullscreen"
-          style={{ width: `${zoomLevel}%` }}
-          className="h-auto object-contain rounded-lg transition-all duration-150"
-        />
-      </div>
-
-      {/* Panel Footer */}
-      <div className="px-4 py-3 border-t border-ink-700 shrink-0 space-y-2">
-        {driveUrl && (
-          <a
-            href={driveUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-center gap-1.5 text-xs text-ink-400 hover:text-accent-blue transition-colors font-body"
-          >
-            <span>↗</span> Open in Google Drive
-          </a>
-        )}
-        <p className="text-center text-ink-600 text-xs font-body">
-          Panel stays open while you edit fields
-        </p>
-      </div>
-    </div>
-  )}
+      )}
     </>
   )
 }
