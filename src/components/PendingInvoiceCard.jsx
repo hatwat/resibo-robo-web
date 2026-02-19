@@ -436,13 +436,19 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
           </div>
 
           {/* Panel Image */}
-          <div className="flex-1 overflow-auto p-4" style={{ overflowX: 'auto', overflowY: 'auto' }}>
-            <img
-              src={imgUrl}
-              alt="Invoice fullscreen"
-              style={{ width: `${zoomLevel}%` }}
-              className="h-auto rounded-lg"
-            />
+          <div className="flex-1 overflow-auto p-4">
+            <div style={{ 
+              width: '100%',
+              transformOrigin: 'top left',
+              transform: `scale(${zoomLevel / 100})`,
+              marginBottom: `${(zoomLevel - 100) * 2}px`
+            }}>
+              <img
+                src={imgUrl}
+                alt="Invoice fullscreen"
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
           </div>
 
           {/* Panel Footer */}
