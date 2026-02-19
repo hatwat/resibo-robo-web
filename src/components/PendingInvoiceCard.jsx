@@ -159,11 +159,11 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   const driveUrl = formData.drive_url
   const isWorking = saving || cancelling
 
-  // Build an image preview URL from Google Drive
+  // Build an image preview URL from Cloudinary if present or Google Drive if not
   // Drive view URLs look like: https://drive.google.com/file/d/FILE_ID/view
   // We convert to a direct img embed: https://drive.google.com/uc?id=FILE_ID
-  let imgUrl = null
-  if (driveUrl) {
+  let imgUrl = rawData.cloudinary_url || null
+  if (!imgUrl && driveUrl) {
     const match = driveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/)
     if (match) {
       imgUrl = `https://drive.google.com/uc?id=${match[1]}&export=view`
