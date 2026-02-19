@@ -7,42 +7,43 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Syne"', 'sans-serif'],
-        body: ['"DM Sans"', 'sans-serif'],
+        display: ['"Playfair Display"', 'serif'],
+        body: ['"Inter"', 'sans-serif'],
         mono: ['"DM Mono"', 'monospace'],
       },
       colors: {
         ink: {
-          50: '#f0f0f0',
-          100: '#d9d9d9',
-          200: '#b3b3b3',
-          300: '#8c8c8c',
-          400: '#666666',
-          500: '#404040',
-          600: '#262626',
-          700: '#1a1a1a',
-          800: '#111111',
-          900: '#080808',
+          50:  '#f0f4ff',
+          100: '#d6e0f7',
+          200: '#adc1ef',
+          300: '#7a9add',
+          400: '#4d74c4',
+          500: '#2a52a0',
+          600: '#1b3a7a',
+          700: '#122759',
+          800: '#0b1a3d',
+          900: '#060e24',
         },
         accent: {
-          green: '#00C48C',
+          gold:  '#C9A84C',
           amber: '#F5A623',
-          red: '#FF4D4D',
-          blue: '#2D7DD2',
+          red:   '#FF4D4D',
+          blue:  '#4A90D9',
+          green: '#00C48C',
         }
       },
       animation: {
-        'fade-in': 'fadeIn 0.4s ease-out forwards',
-        'slide-up': 'slideUp 0.5s ease-out forwards',
+        'fade-in':    'fadeIn 0.4s ease-out forwards',
+        'slide-up':   'slideUp 0.5s ease-out forwards',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0' },
+          '0%':   { opacity: '0' },
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '0%':   { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
