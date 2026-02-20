@@ -198,19 +198,19 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b"
-          style={{ background: 'linear-gradient(90deg, #060e24 0%, #112b60 100%)', borderColor: '#1a3f85' }}>
+          style={{ background: 'linear-gradient(90deg, #5BC8F5 0%, #3AAEE0 100%)', borderColor: '#2d9fd0' }}>
           <div>
-            <p className="font-display font-bold text-white text-base leading-tight">
+            <p className="font-display font-bold text-navy-900 text-base leading-tight" style={{ color: "#0b1d40" }}>
               {formData.vendor_name || 'Unknown Vendor'}
             </p>
             <span className="font-mono text-xs px-2 py-0.5 rounded mt-1 inline-block"
-              style={{ background: 'rgba(201,168,76,0.15)', color: '#fbbf24', border: '1px solid rgba(201,168,76,0.3)' }}>
+              style={{ background: 'rgba(11,29,64,0.15)', color: '#0b1d40', border: '1px solid rgba(11,29,64,0.25)' }}>
               {invoice.transaction_id}
             </span>
           </div>
           <div className="flex items-center gap-3">
             <StatusPill status={validationStatus} />
-            <span className="text-xs font-body" style={{ color: '#7aa0db' }}>{timeAgo}</span>
+            <span className="text-xs font-body" style={{ color: '#0b3060' }}>{timeAgo}</span>
           </div>
         </div>
 
