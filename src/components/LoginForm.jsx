@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import logo from '../assets/ResiboPH_AI.jpg'
+import logo from '../assets/ResiboPH_AI.png'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')

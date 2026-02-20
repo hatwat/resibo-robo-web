@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabaseClient'
 import LoginForm from './components/LoginForm'
 import PendingInvoicesGrid from './components/PendingInvoicesGrid'
-import logo from './assets/ResiboPH_AI.jpg'
+import logo from './assets/ResiboPH_AI.png'
 
 export default function App() {
   const [session, setSession] = useState(null)
