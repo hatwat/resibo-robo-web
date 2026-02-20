@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabaseClient'
-import LoginForm from './components/LoginForm'
+import HomePage from './pages/HomePage'
 import PendingInvoicesGrid from './components/PendingInvoicesGrid'
 import logo from './assets/ResiboPH_AI.png'
 
@@ -19,27 +19,33 @@ export default function App() {
     return () => subscription.unsubscribe()
   }, [])
 
+  // Loading spinner
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #060e24 0%, #112b60 100%)' }}>
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #060e24 0%, #112b60 100%)' }}>
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-[3px] border-navy-700 border-t-gold-500 rounded-full animate-spin" />
-          <p className="text-navy-300 text-sm font-body">Loading…</p>
+          <div className="w-12 h-12 rounded-full animate-spin border-[3px]"
+            style={{ borderColor: '#1a3f85', borderTopColor: '#C9A84C' }} />
+          <p className="text-sm font-body" style={{ color: '#7aa0db' }}>Loading…</p>
         </div>
       </div>
     )
   }
 
-  if (!session) return <LoginForm />
+  // Not logged in — show homepage with embedded login
+  if (!session) return <HomePage />
 
+  // Logged in — show invoice dashboard
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#eef3fb' }}>
       {/* Top nav */}
-      <header className="sticky top-0 z-50 border-b" style={{ background: 'linear-gradient(90deg, #060e24 0%, #112b60 100%)', borderColor: '#1a3f85' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-50 border-b shadow-lg"
+        style={{ background: 'linear-gradient(90deg, #060e24 0%, #112b60 100%)', borderColor: '#1a3f85' }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img src={logo} alt="ResiboPH AI" className="h-9 w-auto rounded-lg object-contain" />
+            <img src={logo} alt="ResiboPH AI" className="h-10 w-auto object-contain" />
             <div className="hidden sm:block">
               <span className="font-display font-bold text-white text-lg tracking-tight">
                 ResiboPH <span style={{ color: '#C9A84C' }}>AI</span>
@@ -59,8 +65,8 @@ export default function App() {
               onClick={() => supabase.auth.signOut()}
               className="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-150 font-body border"
               style={{ background: 'rgba(255,255,255,0.05)', borderColor: '#2a5aad', color: '#adc5eb' }}
-              onMouseEnter={e => { e.target.style.borderColor = '#C9A84C'; e.target.style.color = '#C9A84C' }}
-              onMouseLeave={e => { e.target.style.borderColor = '#2a5aad'; e.target.style.color = '#adc5eb' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#C9A84C'; e.currentTarget.style.color = '#C9A84C' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a5aad'; e.currentTarget.style.color = '#adc5eb' }}
             >
               Sign out
             </button>
@@ -68,7 +74,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Page content */}
+      {/* Invoice dashboard */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <PendingInvoicesGrid session={session} />
       </main>
@@ -76,7 +82,7 @@ export default function App() {
       {/* Footer */}
       <footer className="mt-16 py-6 border-t" style={{ borderColor: '#dce6f8' }}>
         <div className="flex items-center justify-center gap-2">
-          <img src={logo} alt="ResiboPH AI" className="h-5 w-auto rounded opacity-60" />
+          <img src={logo} alt="ResiboPH AI" className="h-5 w-auto opacity-60" />
           <p className="text-xs font-body" style={{ color: '#8aaae0' }}>
             ResiboPH AI · Upload invoices via Telegram · Approve here
           </p>
