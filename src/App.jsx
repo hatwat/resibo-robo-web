@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabaseClient'
 import LoginForm from './components/LoginForm'
 import PendingInvoicesGrid from './components/PendingInvoicesGrid'
+import logo from './assets/ResiboPH_AI.jpg'
 
 export default function App() {
   const [session, setSession] = useState(null)
@@ -38,11 +39,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img
-              src="/ResiboPH_AI.jpg"
-              alt="ResiboPH AI"
-              className="h-9 w-auto rounded-lg object-contain"
-            />
+            <img src={logo} alt="ResiboPH AI" className="h-9 w-auto rounded-lg object-contain" />
             <div className="hidden sm:block">
               <span className="font-display font-bold text-white text-lg tracking-tight">
                 ResiboPH <span style={{ color: '#C9A84C' }}>AI</span>
@@ -79,7 +76,7 @@ export default function App() {
       {/* Footer */}
       <footer className="mt-16 py-6 border-t" style={{ borderColor: '#dce6f8' }}>
         <div className="flex items-center justify-center gap-2">
-          <img src="/ResiboPH_AI.jpg" alt="ResiboPH AI" className="h-5 w-auto rounded opacity-60" />
+          <img src={logo} alt="ResiboPH AI" className="h-5 w-auto rounded opacity-60" />
           <p className="text-xs font-body" style={{ color: '#8aaae0' }}>
             ResiboPH AI · Upload invoices via Telegram · Approve here
           </p>

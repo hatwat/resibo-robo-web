@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import logo from '../assets/ResiboPH_AI.jpg'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
@@ -50,17 +51,15 @@ export default function LoginForm() {
         style={{ background: 'radial-gradient(circle, rgba(74,122,200,0.15) 0%, transparent 70%)' }} />
       <div className="absolute bottom-[-15%] left-[-10%] w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%)' }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.04) 0%, transparent 60%)' }} />
 
       <div className="relative z-10 w-full max-w-[420px] animate-slide-up">
         {/* Logo */}
         <div className="mb-8 text-center">
           <div className="inline-flex items-center justify-center mb-5">
             <img
-              src="/ResiboPH_AI.jpg"
+              src={logo}
               alt="ResiboPH AI"
-              className="h-24 w-auto rounded-2xl object-contain"
+              className="h-28 w-auto object-contain"
               style={{ filter: 'drop-shadow(0 8px 32px rgba(74,122,200,0.4))' }}
             />
           </div>
@@ -73,7 +72,8 @@ export default function LoginForm() {
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl p-8 border" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(20px)', borderColor: 'rgba(74,122,200,0.3)', boxShadow: '0 8px 48px rgba(6,14,36,0.6)' }}>
+        <div className="rounded-2xl p-8 border"
+          style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(20px)', borderColor: 'rgba(74,122,200,0.3)', boxShadow: '0 8px 48px rgba(6,14,36,0.6)' }}>
           {/* Mode toggle */}
           <div className="flex rounded-xl p-1 mb-6 gap-1" style={{ background: 'rgba(6,14,36,0.5)' }}>
             {['password', 'magic'].map(m => (
@@ -114,8 +114,7 @@ export default function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-xl text-white text-sm placeholder:text-navy-600
-                           focus:outline-none transition-all duration-150 font-body"
+                className="w-full px-4 py-3 rounded-xl text-white text-sm placeholder:text-navy-600 focus:outline-none transition-all duration-150 font-body"
                 style={{ background: 'rgba(6,14,36,0.6)', border: '1px solid rgba(74,122,200,0.3)' }}
                 onFocus={e => e.target.style.borderColor = '#C9A84C'}
                 onBlur={e => e.target.style.borderColor = 'rgba(74,122,200,0.3)'}
@@ -133,8 +132,7 @@ export default function LoginForm() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 rounded-xl text-white text-sm placeholder:text-navy-600
-                             focus:outline-none transition-all duration-150 font-body"
+                  className="w-full px-4 py-3 rounded-xl text-white text-sm placeholder:text-navy-600 focus:outline-none transition-all duration-150 font-body"
                   style={{ background: 'rgba(6,14,36,0.6)', border: '1px solid rgba(74,122,200,0.3)' }}
                   onFocus={e => e.target.style.borderColor = '#C9A84C'}
                   onBlur={e => e.target.style.borderColor = 'rgba(74,122,200,0.3)'}
@@ -145,9 +143,7 @@ export default function LoginForm() {
             <button
               onClick={mode === 'password' ? handlePasswordLogin : handleMagicLink}
               disabled={loading}
-              className="w-full py-3 px-6 font-bold rounded-xl active:scale-[0.98] transition-all duration-150
-                         disabled:opacity-50 disabled:cursor-not-allowed text-sm font-display mt-2
-                         flex items-center justify-center gap-2"
+              className="w-full py-3 px-6 font-bold rounded-xl active:scale-[0.98] transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-display mt-2 flex items-center justify-center gap-2"
               style={{ background: 'linear-gradient(135deg, #C9A84C, #fbbf24)', color: '#060e24' }}
             >
               {loading ? (
