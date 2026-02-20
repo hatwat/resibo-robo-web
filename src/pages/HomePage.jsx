@@ -26,7 +26,7 @@ export default function HomePage() {
         boxShadow: '0 2px 20px rgba(6,14,36,0.4)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src={logo} alt="ResiboPH AI" style={{ height: '36px', width: 'auto' }} />
+          <img src={logo} alt="ResiboPH AI" style={{ height: '44px', width: 'auto' }} />
           <span style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '1.05rem', color: 'white' }}>
             ResiboPH <span style={{ color: '#C9A84C' }}>AI</span>
           </span>
@@ -77,6 +77,17 @@ export default function HomePage() {
 
         {/* Left copy */}
         <div style={{ position: 'relative', zIndex: 1 }}>
+          {/* Large logo */}
+          <img
+            src={logo}
+            alt="ResiboPH AI"
+            style={{
+              height: isMobile ? '100px' : '130px',
+              width: 'auto',
+              marginBottom: '1.5rem',
+              filter: 'drop-shadow(0 8px 32px rgba(91,200,245,0.35))',
+            }}
+          />
           <div style={heroBadgeStyle}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#5BC8F5', display: 'inline-block', flexShrink: 0 }} />
             AI-Powered · Philippine BIR-Compliant
