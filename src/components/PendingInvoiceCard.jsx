@@ -137,13 +137,17 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   const animateRemove = (cb) => { setRemoved(true); setTimeout(cb, 380) }
 
   const handleSave = async () => {
-    setSaving(true); setActionError(null)
-    try {
-      const res = await fetch(N8N_SAVE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ pending_id: invoice.id, invoice_data: formData }),
-      })
+  setSaving(true); setActionError(null)
+  try {
+    // Force refresh the token
+    const { data: { session: freshSession } } = await supabase.auth.refreshSession()
+    const token = freshSession?.access_token || session?.access_token
+    
+    const res = await fetch(N8N_SAVE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ pending_id: invoice.id, invoice_data: formData }),
+    })
       const result = await res.json()
       if (!res.ok || !result.success) throw new Error(result.error || result.message || `HTTP ${res.status}`)
       setSidePanelOpen(false)
@@ -155,13 +159,16 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   }
 
   const handleCancel = async () => {
-    setCancelling(true); setActionError(null); setShowCancelConfirm(false)
-    try {
-      const res = await fetch(N8N_CANCEL_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ pending_id: invoice.id, gdrive_file_id: invoice.gdrive_file_id || rawData.gdrive_file_id }),
-      })
+  setCancelling(true); setActionError(null); setShowCancelConfirm(false)
+  try {
+    const { data: { session: freshSession } } = await supabase.auth.refreshSession()
+    const token = freshSession?.access_token || session?.access_token
+
+    const res = await fetch(N8N_CANCEL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ pending_id: invoice.id, gdrive_file_id: invoice.gdrive_file_id || rawData.gdrive_file_id }),
+    })
       const result = await res.json()
       if (!res.ok || !result.success) throw new Error(result.error || result.message || `HTTP ${res.status}`)
       setSidePanelOpen(false)
