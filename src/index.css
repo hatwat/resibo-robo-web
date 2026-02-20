@@ -1,13 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
 
   html {
     font-family: 'Inter', sans-serif;
@@ -16,8 +14,8 @@
   }
 
   body {
-    background-color: #e8edf7;
-    color: #0b1a3d;
+    background-color: #eef3fb;
+    color: #0b1d40;
     margin: 0;
     padding: 0;
   }
@@ -25,76 +23,86 @@
 
 @layer components {
   .field-label {
-    @apply block text-xs font-semibold uppercase tracking-wider text-ink-400 mb-1.5;
+    @apply block text-xs font-semibold uppercase tracking-wider mb-1.5;
+    color: #5c82c9;
     font-family: 'Inter', sans-serif;
   }
 
   .field-input {
-    @apply w-full px-3 py-2.5 bg-white border border-ink-100 rounded-lg text-sm text-ink-800
-           focus:outline-none focus:ring-2 focus:ring-accent-gold focus:border-transparent
+    @apply w-full px-3 py-2.5 bg-white border rounded-lg text-sm
+           focus:outline-none focus:ring-2 focus:border-transparent
            transition-all duration-150 font-body;
+    border-color: #b8cdf1;
+    color: #0b1d40;
   }
-
+  .field-input:focus {
+    --tw-ring-color: #C9A84C;
+  }
   .field-input:disabled {
     @apply opacity-50 cursor-not-allowed;
   }
 
   .card-container {
-    @apply bg-white rounded-2xl shadow-md border border-ink-100 overflow-hidden;
+    @apply bg-white rounded-2xl border overflow-hidden;
+    border-color: #dce6f8;
+    box-shadow: 0 4px 24px 0 rgba(10,30,80,0.08);
   }
 
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm
-           bg-accent-gold text-white hover:bg-opacity-90 active:scale-95
-           disabled:opacity-40 disabled:cursor-not-allowed
-           transition-all duration-150;
+           active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150;
+    background: linear-gradient(135deg, #C9A84C, #fbbf24);
+    color: #060e24;
     font-family: 'Inter', sans-serif;
   }
+  .btn-primary:hover { filter: brightness(1.08); }
 
   .btn-danger {
     @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm
-           bg-white text-accent-red border-2 border-accent-red hover:bg-accent-red hover:text-white active:scale-95
-           disabled:opacity-40 disabled:cursor-not-allowed
-           transition-all duration-150;
+           bg-white border-2 active:scale-95
+           disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150;
+    border-color: #ef4444;
+    color: #ef4444;
     font-family: 'Inter', sans-serif;
+  }
+  .btn-danger:hover {
+    background-color: #ef4444;
+    color: white;
   }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm
-           text-ink-400 hover:text-ink-800 hover:bg-ink-50 active:scale-95
            transition-all duration-150;
+    color: #5c82c9;
+  }
+  .btn-ghost:hover {
+    background-color: #eef3fb;
+    color: #1a3f85;
   }
 }
 
 @layer utilities {
-  .font-display {
-    font-family: 'Playfair Display', serif;
-  }
-  .font-body {
-    font-family: 'Inter', sans-serif;
-  }
-  .font-mono {
-    font-family: 'DM Mono', monospace;
-  }
+  .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-body    { font-family: 'Inter', sans-serif; }
+  .font-mono    { font-family: 'DM Mono', monospace; }
 }
 
-/* Custom scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #adc1ef; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #7a9add; }
+::-webkit-scrollbar-thumb { background: #adc5eb; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #7aa0db; }
 
-/* Smooth card removal animation */
+/* Card exit animation */
 .invoice-card-exit {
   animation: cardExit 0.35s ease-in forwards;
 }
-
 @keyframes cardExit {
   0%   { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(-12px) scale(0.98); max-height: 0; }
 }
 
-/* Login page grain overlay */
+/* Login grain overlay */
 .grain-overlay::after {
   content: '';
   position: fixed;
