@@ -1,16 +1,6 @@
 import { useState, useRef } from 'react'
 import { supabase } from '../lib/supabaseClient'
 
-const EXPENSE_CATEGORIES = [
-  { value: 'PROFESSIONAL', label: 'Professional Services' },
-  { value: 'TRANSPORT', label: 'Transportation' },
-  { value: 'SUPPLIES', label: 'Office Supplies' },
-  { value: 'UTILITIES', label: 'Utilities' },
-  { value: 'FOOD', label: 'Food & Beverages' },
-  { value: 'MEDICINE', label: 'Medicine' },
-  { value: 'OTHERS', label: 'Others' },
-]
-
 const N8N_SAVE_URL = import.meta.env.VITE_N8N_WEBHOOK_SAVE
 const N8N_CANCEL_URL = import.meta.env.VITE_N8N_WEBHOOK_CANCEL
 
@@ -264,7 +254,9 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
                 <div>
                   <label className="field-label">Expense Category</label>
                   <select value={formData.expense_category} onChange={(e) => handleChange('expense_category', e.target.value)} disabled={isWorking} className="field-input">
-                    {EXPENSE_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                    {(rawData.expense_categories || []).map(code => (
+                      <option key={code} value={code}>{code}</option>
+                    ))}
                   </select>
                 </div>
               </div>
