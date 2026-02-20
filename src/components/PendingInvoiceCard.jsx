@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { supabase } from '../lib/supabaseClient'
 
 const EXPENSE_CATEGORIES = [
   { value: 'PROFESSIONAL', label: 'Professional Services' },
