@@ -117,6 +117,7 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   const [saving, setSaving] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const [actionError, setActionError] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [removed, setRemoved] = useState(false)
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
   const [imageError, setImageError] = useState(false)
@@ -128,21 +129,22 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   const animateRemove = (cb) => { setRemoved(true); setTimeout(cb, 380) }
 
   const handleSave = async () => {
-  setSaving(true); setActionError(null)
-  try {
-    // Force refresh the token
-    const { data: { session: freshSession } } = await supabase.auth.refreshSession()
-    const token = freshSession?.access_token || session?.access_token
-    
-    const res = await fetch(N8N_SAVE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ pending_id: invoice.id, invoice_data: formData }),
-    })
+    setSaving(true); setActionError(null); setSuccessMessage(null)
+    try {
+      const { data: { session: freshSession } } = await supabase.auth.refreshSession()
+      const token = freshSession?.access_token || session?.access_token
+
+      const res = await fetch(N8N_SAVE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ pending_id: invoice.id, invoice_data: formData }),
+      })
       const result = await res.json()
       if (!res.ok || !result.success) throw new Error(result.error || result.message || `HTTP ${res.status}`)
       setSidePanelOpen(false)
-      animateRemove(() => onInvoiceRemoved(invoice.id))
+      setSuccessMessage('✓ Invoice saved to Google Sheets!')
+      setSaving(false)
+      setTimeout(() => animateRemove(() => onInvoiceRemoved(invoice.id)), 1500)
     } catch (err) {
       setActionError('Save failed: ' + err.message)
       setSaving(false)
@@ -150,20 +152,22 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
   }
 
   const handleCancel = async () => {
-  setCancelling(true); setActionError(null); setShowCancelConfirm(false)
-  try {
-    const { data: { session: freshSession } } = await supabase.auth.refreshSession()
-    const token = freshSession?.access_token || session?.access_token
+    setCancelling(true); setActionError(null); setSuccessMessage(null); setShowCancelConfirm(false)
+    try {
+      const { data: { session: freshSession } } = await supabase.auth.refreshSession()
+      const token = freshSession?.access_token || session?.access_token
 
-    const res = await fetch(N8N_CANCEL_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ pending_id: invoice.id, gdrive_file_id: invoice.gdrive_file_id || rawData.gdrive_file_id }),
-    })
+      const res = await fetch(N8N_CANCEL_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ pending_id: invoice.id, gdrive_file_id: invoice.gdrive_file_id || rawData.gdrive_file_id }),
+      })
       const result = await res.json()
       if (!res.ok || !result.success) throw new Error(result.error || result.message || `HTTP ${res.status}`)
       setSidePanelOpen(false)
-      animateRemove(() => onInvoiceRemoved(invoice.id))
+      setSuccessMessage('🗑 Invoice deleted successfully')
+      setCancelling(false)
+      setTimeout(() => animateRemove(() => onInvoiceRemoved(invoice.id)), 1500)
     } catch (err) {
       setActionError('Cancel failed: ' + err.message)
       setCancelling(false)
@@ -217,6 +221,14 @@ export default function PendingInvoiceCard({ invoice, session, onInvoiceRemoved 
           <div className="mx-6 mt-4 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-body flex items-start gap-2">
             <span className="shrink-0 mt-0.5">⚠️</span>
             <span>{actionError}</span>
+          </div>
+        )}
+
+        {/* Success banner */}
+        {successMessage && (
+          <div className="mx-6 mt-4 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700 text-sm font-body flex items-center gap-2">
+            <span className="shrink-0">✅</span>
+            <span className="font-semibold">{successMessage}</span>
           </div>
         )}
 
